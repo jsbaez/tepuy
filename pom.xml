@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0
+                             http://maven.apache.org/maven-v4_0_0.xsd">
+
+  <modelVersion>4.0.0</modelVersion>
+  <groupId>net.jbaez.tepuy</groupId>
+  <artifactId>parent</artifactId>
+  <version>0.0.1-SNAPSHOT</version>
+  <packaging>pom</packaging>
+
+  <name>Parent Pom</name>
+
+  <properties>
+    <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+    <java.source.version>1.9</java.source.version>
+    <java.target.version>1.9</java.target.version>
+  </properties>
+
+  <modules>
+    <module>platform</module>
+  </modules>
+
+  <build>
+    <finalName>tepuy-${project.artifactId}-${project.version}</finalName>
+    <pluginManagement>
+       <plugins>
+
+         <plugin>
+           <groupId>org.apache.maven.plugins</groupId>
+           <artifactId>maven-compiler-plugin</artifactId>
+           <configuration>
+             <source>${java.source.version}</source>
+             <target>${java.target.version}</target>
+           </configuration>
+         </plugin>
+
+         <!--
+         mvn versions:set -DnewVersion=x.y.z-SNAPSHOT -> Change version
+         mvn versions:revert -> Revert change
+         mvn versions:commit -> change version
+         -->
+         <plugin>
+             <groupId>org.codehaus.mojo</groupId>
+             <artifactId>versions-maven-plugin</artifactId>
+             <version>2.3</version>
+         </plugin>
+
+       </plugins>
+    </pluginManagement>
+  </build>
+
+</project>
