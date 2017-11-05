@@ -30,6 +30,11 @@ public interface Module
    * @return Id del modulo
    */
   String getModuleId();
+  
+  /**
+   * @return Version de la plataforma compatible
+   */
+  RequiredVersion getPlataform();
 
   /**
    * @return Listado de los modulos requerido 

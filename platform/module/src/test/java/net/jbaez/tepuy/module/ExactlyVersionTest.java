@@ -15,26 +15,31 @@
  * along with this library; if not, write to the Free Software Foundation,
  * Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA
  ******************************************************************************/
-package net.jbaez.tepuy.version;
 
-/**
- * <p>Interfaz utilizada para el manejo de versiones
- * @author Jesus Baez
- */
-public interface Version extends Comparable<Version> {
-  /**
-   * @return Numero mayor de la version
-   */
-  int getMajor();
+package net.jbaez.tepuy.module;
 
-  /**
-   * @return Numero menor de la version
-   */
-  int getMinor();
+import org.junit.jupiter.api.Assertions;
 
-  /**
-   * @return patch de la version
-   */
-  int getPatch();
+import net.jbaez.tepuy.version.Version;
+import net.jbaez.tepuy.version.Versions;
 
+public class ExactlyVersionTest 
+{
+
+  private String versionString = "1.0.1";
+  private Version version = Versions.parseVersion(versionString);
+  
+  
+  public void test_equals()
+  {
+    RequiredVersion requiredVersion = Modules.parseRequiredVersion(versionString);
+    Assertions.assertEquals(true, requiredVersion.isValid(version));
+  }
+  
+  public void test_not_valid()
+  {
+    RequiredVersion requiredVersion = Modules.parseRequiredVersion(versionString);
+    Assertions.assertEquals(false, requiredVersion.isValid(Versions.parseVersion("1.0.2")));
+  }
+  
 }

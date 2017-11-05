@@ -16,8 +16,8 @@
   <name>Platform Parent Pom</name>
 
   <modules>
-     <module>module</module>
      <module>common</module>
+     <module>module</module>
   </modules>
 
 </project>

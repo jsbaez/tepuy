@@ -15,21 +15,36 @@
  * along with this library; if not, write to the Free Software Foundation,
  * Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA
  ******************************************************************************/
+
 package net.jbaez.tepuy.module;
 
-import net.jbaez.tepuy.version.Version;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
 
-/**
- * <p> Interfaz que define los metodos para el 
- * requerimiento de version 
- * @author Jesus Baez
- */
-public interface RequiredVersion 
+import net.jbaez.tepuy.version.Version;
+import net.jbaez.tepuy.version.Versions;
+
+public class LessThanEqualVersionTest 
 {
-  /**
-   * @param version {@link Version} a comprobar
-   * @return <code>true</code> si satisface el requerimiento
-   * o <code>false</code> si no
-   */
-  boolean isValid(Version version);
+
+  private String versionString = "1.0.1";
+  
+  private Version versionEquals = Versions.parseVersion(versionString),
+                  versionMajor = Versions.parseVersion("1.0.2"),
+                  versionMinor = Versions.parseVersion("1.0.0");
+  
+  @Test
+  public void test_valid()
+  {
+    RequiredVersion requiredVersion = Modules.parseRequiredVersion("<=" + versionString);
+    Assertions.assertTrue(requiredVersion.isValid(versionEquals));
+    Assertions.assertTrue(requiredVersion.isValid(versionMinor));
+  }
+  
+  @Test
+  public void test_not_valid()
+  {
+    RequiredVersion requiredVersion = Modules.parseRequiredVersion("<=" + versionString);
+    Assertions.assertFalse(requiredVersion.isValid(versionMajor));
+  }
 }

@@ -15,7 +15,11 @@
  * along with this library; if not, write to the Free Software Foundation,
  * Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA
  ******************************************************************************/
+
 package net.jbaez.tepuy.version;
+
+import java.text.MessageFormat;
+import java.util.regex.Pattern;
 
 /**
  * <p>Clase de utilidad para el trabajo con versiones
@@ -26,6 +30,12 @@ package net.jbaez.tepuy.version;
 public final class Versions {
 
   private Versions() {}
+  
+  /**
+   * <p>Expresion regular para comprobar que un texto posee
+   * un numero de version valido
+   */
+  public static final Pattern VERSION_PATTERN = Pattern.compile("[0-9]+\\.[0-9]+\\.[0-9]+");
   
   /**
    * <p> Crea una version con la informacion suministrada
@@ -49,11 +59,12 @@ public final class Versions {
    */
   public static Version parseVersion(String expre) throws IllegalArgumentException
   {
-    String[] parts = expre.split("\\.");
-    if(parts.length != 3)
+    if(!VERSION_PATTERN.matcher(expre).matches())
     {
       throw new IllegalArgumentException("The text does not contain a version");
     }
+    
+    String[] parts = expre.split("\\.");
     
     try {
       return new SimpleVersion(Integer.parseInt(parts[0]), 
@@ -64,7 +75,7 @@ public final class Versions {
     }
   }
 
-  private static class SimpleVersion implements Version 
+  static class SimpleVersion implements Version 
   {
     private int major = 0,
                 minor = 0,
@@ -130,6 +141,44 @@ public final class Versions {
     {
       return patch;
     }
+    
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public String toString()
+    {
+      String template = "{0,number,#}.{1,number,#}.{2,number,#}";
+      return MessageFormat.format(template, getMajor(), getMinor(), getPatch());
+    }
 
+    @Override
+    public int hashCode() {
+      final int prime = 31;
+      int result = 1;
+      result = prime * result + major;
+      result = prime * result + minor;
+      result = prime * result + patch;
+      return result;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+      if (this == obj)
+        return true;
+      if (obj == null)
+        return false;
+      if (getClass() != obj.getClass())
+        return false;
+      SimpleVersion other = (SimpleVersion) obj;
+      if (major != other.major)
+        return false;
+      if (minor != other.minor)
+        return false;
+      if (patch != other.patch)
+        return false;
+      return true;
+    }
+    
   }
 }
