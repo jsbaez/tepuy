@@ -14,10 +14,23 @@
 	<name>Tepuy core module</name>
 
 	<dependencies>
+	
 		<dependency>
 			<groupId>net.jbaez.tepuy</groupId>
 			<artifactId>common</artifactId>
 		</dependency>
+
+		<dependency>
+			<groupId>com.googlecode.json-simple</groupId>
+			<artifactId>json-simple</artifactId>
+			<exclusions>
+        <exclusion>
+          <groupId>junit</groupId>
+          <artifactId>junit</artifactId>
+        </exclusion>
+      </exclusions>
+		</dependency>
+		
 	</dependencies>
 
 </project>

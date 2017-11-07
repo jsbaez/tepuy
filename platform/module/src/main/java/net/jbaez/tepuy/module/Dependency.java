@@ -21,7 +21,7 @@ package net.jbaez.tepuy.module;
  * <p> Interfaz que describe un requesito de un modulo
  * @author Jesus Baez
  */
-public interface Required 
+public interface Dependency 
 {
   /**
    * @return el Id del modulo necesario

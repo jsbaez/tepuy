@@ -15,30 +15,13 @@
  * along with this library; if not, write to the Free Software Foundation,
  * Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA
  ******************************************************************************/
+
 package net.jbaez.tepuy.module;
 
-import java.util.List;
+public class TestModule extends JsonModuleDescriptor {
 
-/**
- * <p> Interfaz que declara los metodos comunes a 
- * un modulo
- * @author Jesus Baez
- */
-public interface Module 
-{
-  /**
-   * @return Id del modulo
-   */
-  String getModuleId();
-  
-  /**
-   * @return Version de la plataforma compatible
-   */
-  RequiredVersion getPlatform();
+  public TestModule(String moduleId) {
+    super(moduleId);
+  }
 
-  /**
-   * @return Listado de los modulos requerido 
-   * por este modulo
-   */
-  List<Dependency> getDependencies();
 }
