@@ -59,4 +59,36 @@ public class JsonModuleDescriptorTest {
     Assertions.assertTrue(required0.isValid(Versions.parseVersion("0.0.2")));
     Assertions.assertFalse(required0.isValid(Versions.parseVersion("0.0.3")));
   }
+  
+  @Test
+  public void test_module_sin_plataforma()
+  {
+    Module module = new TestModule("module-sin-plataforma");
+    
+    Assertions.assertThrows(IllegalArgumentException.class, ()->{
+      module.getPlatform();
+    });
+  }
+  
+  @Test
+  public void test_module_sin_json()
+  {
+    Assertions.assertThrows(IllegalArgumentException.class, ()->{
+      new TestModule("module-mal-json");
+    });
+  }
+  
+  @Test
+  public void test_module_mal_versiones()
+  {
+    Module module = new TestModule("module-mal-versiones");
+    
+    Assertions.assertThrows(IllegalArgumentException.class, ()->{
+      module.getPlatform();
+    });
+    
+    Assertions.assertThrows(IllegalArgumentException.class, ()->{
+      module.getDependencies();
+    });
+  }
 }

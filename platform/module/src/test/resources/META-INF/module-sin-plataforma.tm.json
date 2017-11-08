@@ -1,0 +1,6 @@
+{
+  "dependencies": {
+    "module-a":"0.0.1",
+    "module-b":"<=0.0.2"
+  }
+}
