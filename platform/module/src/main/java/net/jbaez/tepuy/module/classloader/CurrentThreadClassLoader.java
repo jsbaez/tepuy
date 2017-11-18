@@ -16,23 +16,24 @@
  * Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA
  ******************************************************************************/
 
-package net.jbaez.tepuy.module.engine;
+package net.jbaez.tepuy.module.classloader;
 
-import java.util.function.Supplier;
-
-import org.springframework.context.support.AbstractApplicationContext;
+import net.jbaez.tepuy.module.engine.ClassLoaderSupplier;
 
 /**
- * <p> Interfaz utilizada para suministrar
- * el contexto raiz del sistema de modulos
+ * <p> Implemnatacion de {@link ClassLoaderSupplier} que retorna
+ * el {@link ClassLoader} del actual hilo
  * @author Jesus Baez
  */
-public interface MainContextSupplier extends Supplier<AbstractApplicationContext> {
+public class CurrentThreadClassLoader implements ClassLoaderSupplier{
 
   /**
    * {@inheritDoc}
-   * @see java.util.function.Supplier#get()
    */
   @Override
-  AbstractApplicationContext get();
+  public ClassLoader get() 
+  {
+    return Thread.currentThread().getContextClassLoader();
+  }
+
 }

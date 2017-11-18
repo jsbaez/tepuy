@@ -15,30 +15,34 @@
  * along with this library; if not, write to the Free Software Foundation,
  * Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA
  ******************************************************************************/
-package net.jbaez.tepuy.module;
 
-import java.util.List;
+package net.jbaez.tepuy.module.context;
+
+import org.springframework.context.annotation.AnnotationConfigApplicationContext;
+import org.springframework.context.annotation.Configuration;
+import org.springframework.context.support.AbstractApplicationContext;
+
+import net.jbaez.tepuy.module.engine.MainContextSupplier;
 
 /**
- * <p> Interfaz que declara los metodos comunes a 
- * un modulo
+ * <p> Implementacion que retorna {@link AnnotationConfigApplicationContext}
  * @author Jesus Baez
  */
-public interface Module 
-{
-  /**
-   * @return Id del modulo
-   */
-  String getModuleId();
-  
-  /**
-   * @return Version de la plataforma compatible
-   */
-  RequiredVersion getPlatform();
+public class SimpleMainContextSupplier implements MainContextSupplier {
 
   /**
-   * @return Listado de los modulos requerido 
-   * por este modulo
+   * {@inheritDoc}
    */
-  List<Dependency> getDependencies();
+  @Override
+  public AbstractApplicationContext get() 
+  {
+    return new AnnotationConfigApplicationContext(EmptyConfig.class);
+  }
+  
+  @Configuration
+  public static class EmptyConfig
+  {
+    
+  }
+
 }

@@ -18,21 +18,19 @@
 
 package net.jbaez.tepuy.module.engine;
 
-import java.util.function.Supplier;
-
-import org.springframework.context.support.AbstractApplicationContext;
-
 /**
- * <p> Interfaz utilizada para suministrar
- * el contexto raiz del sistema de modulos
+ * <p> Motor de {@link Module}'s
  * @author Jesus Baez
  */
-public interface MainContextSupplier extends Supplier<AbstractApplicationContext> {
+public interface ModuleEngine 
+{
 
   /**
-   * {@inheritDoc}
-   * @see java.util.function.Supplier#get()
+   * <p> Inicia el motor de modulos
    */
-  @Override
-  AbstractApplicationContext get();
+  void start();
+  /**
+   * <p> Detiene el motor de modulos
+   */
+  void stop();
 }

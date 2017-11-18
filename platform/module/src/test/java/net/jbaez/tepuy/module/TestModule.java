@@ -18,10 +18,18 @@
 
 package net.jbaez.tepuy.module;
 
+import java.util.Set;
+
 public class TestModule extends JsonModuleDescriptor {
 
   public TestModule(String moduleId) {
     super(moduleId);
+  }
+
+  @Override
+  public Set<Class<?>> getConfigClass() 
+  {
+    return null;
   }
 
 }

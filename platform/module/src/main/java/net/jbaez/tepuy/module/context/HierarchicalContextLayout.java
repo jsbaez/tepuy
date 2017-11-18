@@ -16,28 +16,38 @@
  * Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA
  ******************************************************************************/
 
-package net.jbaez.tepuy.module.engine;
+package net.jbaez.tepuy.module.context;
+
+import java.util.Set;
 
 import org.springframework.context.ApplicationContext;
+import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 
 import net.jbaez.tepuy.module.TepuyModule;
+import net.jbaez.tepuy.module.engine.ContextLayout;
 
-/**
- * <p> Define la manera como se debe organizar
- * los contextos de los modulos
- * @author Jesus Baez
- */
-public interface ContextLayout 
-{
+public class HierarchicalContextLayout implements ContextLayout {
 
-  /**
-   * <p>Inicializa el layout 
-   * @param ctx Context raiz de la aplicacion
-   */
-  void initialize(ApplicationContext ctx);
-  /**
-   * <p> Anade el modulo en el layout 
-   * @param module {@link TepuyModule} a anadir
-   */
-  void addModule(TepuyModule module);
+  private ApplicationContext mainContext;
+  
+  @Override
+  public void initialize(ApplicationContext ctx) {
+    this.mainContext = ctx;
+  }
+
+  public void addModule(TepuyModule module) {
+    
+    AnnotationConfigApplicationContext moduleContext = createApplicationContext(module);
+    moduleContext.refresh();
+  }
+  
+  protected AnnotationConfigApplicationContext createApplicationContext(TepuyModule module)
+  {
+    Set<Class<?>> configClass = module.getConfigClass();
+    AnnotationConfigApplicationContext moduleContext = new AnnotationConfigApplicationContext();
+    moduleContext.setParent(mainContext);
+    moduleContext.register(configClass.toArray(new Class[] {}));
+    return moduleContext;
+  }
+
 }

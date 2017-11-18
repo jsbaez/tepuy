@@ -15,24 +15,37 @@
  * along with this library; if not, write to the Free Software Foundation,
  * Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA
  ******************************************************************************/
+package net.jbaez.tepuy.module;
 
-package net.jbaez.tepuy.module.engine;
-
-import java.util.function.Supplier;
-
-import org.springframework.context.support.AbstractApplicationContext;
+import java.util.List;
+import java.util.Set;
 
 /**
- * <p> Interfaz utilizada para suministrar
- * el contexto raiz del sistema de modulos
+ * <p> Interfaz que declara los metodos comunes a 
+ * un modulo
  * @author Jesus Baez
  */
-public interface MainContextSupplier extends Supplier<AbstractApplicationContext> {
+public interface TepuyModule 
+{
+  /**
+   * @return Id del modulo
+   */
+  String getModuleId();
+  
+  /**
+   * @return Version de la plataforma compatible
+   */
+  RequiredVersion getPlatform();
 
   /**
-   * {@inheritDoc}
-   * @see java.util.function.Supplier#get()
+   * @return Listado de los modulos requerido 
+   * por este modulo
    */
-  @Override
-  AbstractApplicationContext get();
+  List<Dependency> getDependencies();
+  
+  /**
+   * <p> Retorna las clases configuracion de contextos 
+   * @return Lista con las clases de configuracion
+   */
+  Set<Class<?>> getConfigClass();
 }
