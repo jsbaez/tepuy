@@ -25,7 +25,7 @@ import java.util.Set;
  * un modulo
  * @author Jesus Baez
  */
-public interface TepuyModule 
+public interface PlatformModule 
 {
   /**
    * @return Id del modulo

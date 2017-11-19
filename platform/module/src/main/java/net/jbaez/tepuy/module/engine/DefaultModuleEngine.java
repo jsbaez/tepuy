@@ -26,7 +26,7 @@ import java.util.stream.Collectors;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.AbstractApplicationContext;
 
-import net.jbaez.tepuy.module.TepuyModule;
+import net.jbaez.tepuy.module.PlatformModule;
 
 /**
  * <p> Implementacion por defecto del motor 
@@ -59,7 +59,7 @@ public class DefaultModuleEngine implements ModuleEngine {
     this.mainContext = mainContextSupplier.get();
     configureMainContext(mainContext);
     
-    Set<TepuyModule> modules = loadModules(classLoaderSupplier);
+    Set<PlatformModule> modules = loadModules(classLoaderSupplier);
     configureModules(modules, mainContext);
     this.initiated = true;
   }
@@ -74,14 +74,14 @@ public class DefaultModuleEngine implements ModuleEngine {
     this.mainContext.close();
   }
   
-  protected Set<TepuyModule> loadModules(ClassLoaderSupplier classLoaderSupplier)
+  protected Set<PlatformModule> loadModules(ClassLoaderSupplier classLoaderSupplier)
   {
     ClassLoader moduleClassLoader = classLoaderSupplier.get();
-    ServiceLoader<TepuyModule> serviceLoader = ServiceLoader.load(TepuyModule.class, moduleClassLoader);
+    ServiceLoader<PlatformModule> serviceLoader = ServiceLoader.load(PlatformModule.class, moduleClassLoader);
     return serviceLoader.stream().map(Provider::get).collect(Collectors.toSet());
   }
   
-  protected void configureModules(Set<TepuyModule> modules, ApplicationContext context)
+  protected void configureModules(Set<PlatformModule> modules, ApplicationContext context)
   {
     this.contextLayout.initialize(context);
     modules.forEach(module -> this.contextLayout.addModule(module));

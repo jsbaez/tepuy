@@ -23,7 +23,7 @@ import java.util.Set;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 
-import net.jbaez.tepuy.module.TepuyModule;
+import net.jbaez.tepuy.module.PlatformModule;
 import net.jbaez.tepuy.module.engine.ContextLayout;
 
 public class HierarchicalContextLayout implements ContextLayout {
@@ -35,13 +35,13 @@ public class HierarchicalContextLayout implements ContextLayout {
     this.mainContext = ctx;
   }
 
-  public void addModule(TepuyModule module) {
+  public void addModule(PlatformModule module) {
     
     AnnotationConfigApplicationContext moduleContext = createApplicationContext(module);
     moduleContext.refresh();
   }
   
-  protected AnnotationConfigApplicationContext createApplicationContext(TepuyModule module)
+  protected AnnotationConfigApplicationContext createApplicationContext(PlatformModule module)
   {
     Set<Class<?>> configClass = module.getConfigClass();
     AnnotationConfigApplicationContext moduleContext = new AnnotationConfigApplicationContext();

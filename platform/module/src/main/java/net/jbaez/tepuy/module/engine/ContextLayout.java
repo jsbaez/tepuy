@@ -20,7 +20,7 @@ package net.jbaez.tepuy.module.engine;
 
 import org.springframework.context.ApplicationContext;
 
-import net.jbaez.tepuy.module.TepuyModule;
+import net.jbaez.tepuy.module.PlatformModule;
 
 /**
  * <p> Define la manera como se debe organizar
@@ -37,7 +37,7 @@ public interface ContextLayout
   void initialize(ApplicationContext ctx);
   /**
    * <p> Anade el modulo en el layout 
-   * @param module {@link TepuyModule} a anadir
+   * @param module {@link PlatformModule} a anadir
    */
-  void addModule(TepuyModule module);
+  void addModule(PlatformModule module);
 }

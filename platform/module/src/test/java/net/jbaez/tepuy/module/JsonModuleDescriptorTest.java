@@ -30,7 +30,7 @@ public class JsonModuleDescriptorTest {
   @Test
   public void test_module_parse()
   {
-    TepuyModule module = new TestModule("module-1");
+    PlatformModule module = new TestModule("module-1");
     RequiredVersion plataform = module.getPlatform();
     
     Assertions.assertFalse(plataform.isValid(Versions.parseVersion("0.0.1")));
@@ -63,7 +63,7 @@ public class JsonModuleDescriptorTest {
   @Test
   public void test_module_sin_plataforma()
   {
-    TepuyModule module = new TestModule("module-sin-plataforma");
+    PlatformModule module = new TestModule("module-sin-plataforma");
     
     Assertions.assertThrows(IllegalArgumentException.class, ()->{
       module.getPlatform();
@@ -81,7 +81,7 @@ public class JsonModuleDescriptorTest {
   @Test
   public void test_module_mal_versiones()
   {
-    TepuyModule module = new TestModule("module-mal-versiones");
+    PlatformModule module = new TestModule("module-mal-versiones");
     
     Assertions.assertThrows(IllegalArgumentException.class, ()->{
       module.getPlatform();

@@ -33,12 +33,12 @@ import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
 
 /**
- * <p> Implementacion de un {@link TepuyModule} que obtiene
+ * <p> Implementacion de un {@link PlatformModule} que obtiene
  * la informacion del modulo de un archivo JSON ubicado en 
  * la carpeta META-INF
  * @author Jesus Baez
  */
-public abstract class JsonModuleDescriptor implements TepuyModule 
+public abstract class JsonModuleDescriptor implements PlatformModule 
 {
 
   private static final String PROP_PLATFORM = "platform";
