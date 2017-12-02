@@ -21,6 +21,7 @@ package net.jbaez.tepuy.module;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.lang.ref.WeakReference;
 import java.text.MessageFormat;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -31,6 +32,9 @@ import java.util.regex.Pattern;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
+
+import net.jbaez.tepuy.version.Version;
+import net.jbaez.tepuy.version.Versions;
 
 /**
  * <p> Implementacion de un {@link PlatformModule} que obtiene
@@ -43,24 +47,19 @@ public abstract class JsonModuleDescriptor implements PlatformModule
 
   private static final String PROP_PLATFORM = "platform";
   private static final String PROP_DEPENDENCIES = "dependencies";
+  private static final String PROP_VERSION = "version";
   
   private String moduleId;
-  private JSONObject json;
+  private Version version;
   private List<Dependency> dependencies;
-  private RequiredVersion plataformVersion;
+  private RequiredVersion platformVersion;
+  private WeakReference<JSONObject> jsonReference;
   
   public JsonModuleDescriptor(String moduleId)
   {
     this.moduleId = moduleId;
-    InputStream in = readFile(moduleId);
-    
-    try {
-      this.json = (JSONObject) new JSONParser().parse(new InputStreamReader(in));
-    } catch (IOException | ParseException ex) {
-      String message = "Check the file ''{0}''";
-      message = MessageFormat.format(message, createFileName(moduleId));
-      throw new IllegalArgumentException(message, ex);
-    }
+    JSONObject json = readJsonModuleDescriptor(moduleId);
+    this.jsonReference = new WeakReference<>(json);
   }
   
   @Override
@@ -68,23 +67,40 @@ public abstract class JsonModuleDescriptor implements PlatformModule
   {
     return moduleId;
   }
+  
+  @Override
+  public Version getVersion() {
+    if(version != null)
+    {
+      return version;
+    }
+    
+    String strVersion = readProperty(PROP_VERSION, String.class, null);
+    if(strVersion == null)
+    {
+      throw new IllegalArgumentException("The version is mandatory");
+    }
+    
+    version = Versions.parseVersion(strVersion);
+    return version;
+  }
 
   @Override
   public RequiredVersion getPlatform() 
   {
-    if(plataformVersion != null) 
+    if(platformVersion != null) 
     {
-      return plataformVersion;
+      return platformVersion;
     }
     
-    String version = readProperty(json, PROP_PLATFORM, String.class, null);
+    String version = readProperty(PROP_PLATFORM, String.class, null);
     if(version == null)
     {
       throw new IllegalArgumentException("The platform version is mandatory");
     }
     
-    plataformVersion = Modules.parseRequiredVersion(version);
-    return plataformVersion;
+    platformVersion = Modules.parseRequiredVersion(version);
+    return platformVersion;
   }
 
   @Override
@@ -95,7 +111,7 @@ public abstract class JsonModuleDescriptor implements PlatformModule
       return this.dependencies;
     }
     
-    final JSONObject jsonDependencies = readProperty(json, PROP_DEPENDENCIES, JSONObject.class, null);
+    final JSONObject jsonDependencies = readProperty(PROP_DEPENDENCIES, JSONObject.class, null);
     if(jsonDependencies == null)
     {
       return Collections.emptyList(); 
@@ -123,11 +139,52 @@ public abstract class JsonModuleDescriptor implements PlatformModule
     return this.dependencies;
   }
   
-  protected InputStream readFile(String moduleName)
+  @Override
+  public boolean equals(Object other) {
+    boolean isModule = PlatformModule.class.isInstance(other);
+    if(!isModule)
+    {
+      return false;
+    }
+    
+    PlatformModule otherModule = PlatformModule.class.cast(other);
+    return this.getModuleId().equals(otherModule.getModuleId()) &&
+        this.getVersion().equals(otherModule.getVersion());
+  }
+
+  @Override
+  public int hashCode() {
+    return "TEPUY_MODULE".hashCode() + 
+            getModuleId().hashCode() + 
+            getVersion().hashCode();
+  }
+
+  protected InputStream readFile(String moduleId)
   {
-    String file = createFileName(moduleName);
+    String file = createFileName(moduleId);
     ClassLoader loader = this.getClass().getClassLoader();
     return loader.getResourceAsStream(file);
+  }
+  
+  protected JSONObject readJsonModuleDescriptor(String moduleId)
+  {
+    InputStream in = readFile(moduleId);
+    if(in == null)
+    {
+      String message = "The description file for module ''{0}'' does not exist";
+      message = MessageFormat.format(message, moduleId);
+      throw new IllegalArgumentException(message);
+    }
+    
+    try {
+      return (JSONObject) new JSONParser().parse(new InputStreamReader(in));
+    } catch (IOException | ParseException ex) {
+      String message = "Check the file ''{0}''",
+             fileName = createFileName(moduleId);
+      
+      message = MessageFormat.format(message, fileName);
+      throw new IllegalArgumentException(message, ex);
+    }
   }
   
   protected String createFileName(String moduleName)
@@ -136,9 +193,16 @@ public abstract class JsonModuleDescriptor implements PlatformModule
     return MessageFormat.format(file, this.moduleId);
   }
   
-  protected <T> T readProperty(JSONObject json, String propertyPath, Class<T> type, T defaultValue)
+  private <T> T readProperty(String propertyPath, Class<T> type, T defaultValue)
   {
     String[] properties = propertyPath.split(Pattern.quote("."));
+    JSONObject json = jsonReference.get();
+    
+    if(json == null)
+    {
+      json = readJsonModuleDescriptor(this.moduleId);
+      this.jsonReference = new WeakReference<>(json);
+    }
     
     Object value = json;
     for(int i = 0; i < properties.length && value != null; i++)

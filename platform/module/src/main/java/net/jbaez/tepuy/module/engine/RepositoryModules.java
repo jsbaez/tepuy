@@ -15,44 +15,36 @@
  * along with this library; if not, write to the Free Software Foundation,
  * Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA
  ******************************************************************************/
-package net.jbaez.tepuy.module;
 
-import java.util.List;
+package net.jbaez.tepuy.module.engine;
+
+import java.util.Optional;
 import java.util.Set;
 
-import net.jbaez.tepuy.version.Version;
+import net.jbaez.tepuy.module.PlatformModule;
+import net.jbaez.tepuy.module.RequiredVersion;
 
 /**
- * <p> Interfaz que declara los metodos comunes a 
- * un modulo
+ * <p> Interfaz que suministra los metodos
+ * de un repositorio de {@link PlatformModule}
  * @author Jesus Baez
  */
-public interface PlatformModule 
+public interface RepositoryModules 
 {
   /**
-   * @return Id del modulo
+   * @return Todos los modulos que se encuentran
+   * en el repositorio
    */
-  String getModuleId();
-  
+  Set<PlatformModule> findAll();
   /**
-   * @return La {@link Version} del modulo
+   * <p> Realiza la busqueda de un modulo
+   * que tenga el id igual al pasado como parametro
+   * y cumpla con el {@link RequiredVersion}
+   * @param moduleId Id del modulo a buscar
+   * @param version {@link RequiredVersion} a buscar
+   * @return El {@link Optional} que contiene el resultado
+   * @throws IllegalStateException Si existe mas de un modulo
+   * que satisface 
    */
-  Version getVersion();
-  
-  /**
-   * @return Version de la plataforma compatible
-   */
-  RequiredVersion getPlatform();
-
-  /**
-   * @return Listado de los modulos requerido 
-   * por este modulo
-   */
-  List<Dependency> getDependencies();
-  
-  /**
-   * <p> Retorna las clases configuracion de contextos 
-   * @return Lista con las clases de configuracion
-   */
-  Set<Class<?>> getConfigClass();
+  Optional<PlatformModule> findOne(String moduleId, RequiredVersion version) throws IllegalStateException;
 }
