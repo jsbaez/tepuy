@@ -19,6 +19,7 @@
 		<tepuy.version>${project.version}</tepuy.version>
 		<junit.version>5.0.1</junit.version>
 		<json-simple.version>1.1.1</json-simple.version>
+		<jgrapht.version>1.1.0</jgrapht.version>
 		<spring-context.version>5.0.1.RELEASE</spring-context.version>
 	</properties>
 
@@ -71,6 +72,12 @@
 				<groupId>com.googlecode.json-simple</groupId>
 				<artifactId>json-simple</artifactId>
 				<version>${json-simple.version}</version>
+			</dependency>
+
+			<dependency>
+				<groupId>org.jgrapht</groupId>
+				<artifactId>jgrapht-core</artifactId>
+				<version>${jgrapht.version}</version>
 			</dependency>
 
 			<dependency>

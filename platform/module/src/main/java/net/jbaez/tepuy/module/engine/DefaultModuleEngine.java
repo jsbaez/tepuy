@@ -19,14 +19,21 @@
 package net.jbaez.tepuy.module.engine;
 
 import java.text.MessageFormat;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
 
+import org.jgrapht.Graph;
+import org.jgrapht.alg.CycleDetector;
+import org.jgrapht.graph.DefaultDirectedGraph;
+import org.jgrapht.graph.DefaultEdge;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.AbstractApplicationContext;
 
+import net.jbaez.tepuy.module.Dependency;
 import net.jbaez.tepuy.module.PlatformModule;
 import net.jbaez.tepuy.version.Version;
 
@@ -133,6 +140,56 @@ public class DefaultModuleEngine implements ModuleEngine {
   
   protected void validateGraph(Set<PlatformModule> modules)
   {
+    Graph<PlatformModule, DefaultEdge> graph = new DefaultDirectedGraph<>(DefaultEdge.class);
+    
+    //Add all modules
+    modules.forEach(module -> graph.addVertex(module));
+    
+    //Add dependencies
+    Iterator<PlatformModule> iterator = modules.iterator();
+    while(iterator.hasNext())
+    {
+      addDependencies(graph, iterator.next());
+    }
+    
+    CycleDetector<PlatformModule, DefaultEdge> detector = new CycleDetector<>(graph);
+    Set<PlatformModule> cycles = detector.findCycles();
+    if(cycles != null && !cycles.isEmpty())
+    {
+      String message = "Cyclic dependencies have been found with these modules ''{0}''";
+      message = MessageFormat.format(message, cycles.toString());
+      throw new IllegalStateException(message);
+    }
+  }
+  
+  private void addDependencies(Graph<PlatformModule, DefaultEdge> graph, PlatformModule module)
+  {
+    Iterator<Dependency> dependencies = module.getDependencies().iterator();
+    Optional<PlatformModule> optionalModule = null;
+    Dependency dependency = null;
+
+    while(dependencies.hasNext())
+    {
+      dependency = dependencies.next();
+      optionalModule = repositoryModules.findOne(
+            dependency.getModuleId(), 
+            dependency.getVersion()
+      );
+      
+      if(!optionalModule.isPresent())
+      {
+        String message = "Module ''{0}'' in its version ''{1}'' is necessary";
+        message = MessageFormat.format(message, 
+            dependency.getModuleId(), 
+            dependency.getVersion()
+        );
+        throw new IllegalStateException(message);
+      }
+      
+      graph.addVertex(optionalModule.get());
+      graph.addEdge(module, optionalModule.get());
+      addDependencies(graph, optionalModule.get());
+    }
     
   }
   
