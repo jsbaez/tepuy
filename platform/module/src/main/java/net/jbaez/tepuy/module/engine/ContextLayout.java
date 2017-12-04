@@ -15,30 +15,29 @@
  * along with this library; if not, write to the Free Software Foundation,
  * Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA
  ******************************************************************************/
-package net.jbaez.tepuy.module;
 
-import java.util.List;
+package net.jbaez.tepuy.module.engine;
+
+import org.springframework.context.ApplicationContext;
+
+import net.jbaez.tepuy.module.PlatformModule;
 
 /**
- * <p> Interfaz que declara los metodos comunes a 
- * un modulo
+ * <p> Define la manera como se debe organizar
+ * los contextos de los modulos
  * @author Jesus Baez
  */
-public interface Module 
+public interface ContextLayout 
 {
-  /**
-   * @return Id del modulo
-   */
-  String getModuleId();
-  
-  /**
-   * @return Version de la plataforma compatible
-   */
-  RequiredVersion getPlataform();
 
   /**
-   * @return Listado de los modulos requerido 
-   * por este modulo
+   * <p>Inicializa el layout 
+   * @param ctx Context raiz de la aplicacion
    */
-  List<Required> getRequireds();
+  void initialize(ApplicationContext ctx);
+  /**
+   * <p> Anade el modulo en el layout 
+   * @param module {@link PlatformModule} a anadir
+   */
+  void addModule(PlatformModule module);
 }

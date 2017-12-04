@@ -15,20 +15,24 @@
  * along with this library; if not, write to the Free Software Foundation,
  * Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA
  ******************************************************************************/
-package net.jbaez.tepuy.module;
+
+package net.jbaez.tepuy.module.engine;
+
+import java.util.function.Supplier;
+
+import org.springframework.context.support.AbstractApplicationContext;
 
 /**
- * <p> Interfaz que describe un requesito de un modulo
+ * <p> Interfaz utilizada para suministrar
+ * el contexto raiz del sistema de modulos
  * @author Jesus Baez
  */
-public interface Required 
-{
+public interface MainContextSupplier extends Supplier<AbstractApplicationContext> {
+
   /**
-   * @return el Id del modulo necesario
+   * {@inheritDoc}
+   * @see java.util.function.Supplier#get()
    */
-  String getModuleId();
-  /**
-   * @return Informacion de requerimiento de la version
-   */
-  RequiredVersion getVersion();
+  @Override
+  AbstractApplicationContext get();
 }

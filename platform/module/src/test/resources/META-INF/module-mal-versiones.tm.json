@@ -1,0 +1,7 @@
+{
+  "platform":"a.b.c",
+  "dependencies": {
+    "module-a":"x.y.z",
+    "module-b":"0.a.2"
+  }
+}
