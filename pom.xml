@@ -25,10 +25,11 @@
 
 	<modules>
 		<module>platform</module>
+		<module>package</module>
 	</modules>
 
 	<build>
-		<finalName>tepuy-${project.artifactId}-${project.version}</finalName>
+		<!-- finalName>tepuy-${project.artifactId}-${project.version}</finalName -->
 		<pluginManagement>
 			<plugins>
 
@@ -41,7 +42,7 @@
 					</configuration>
 				</plugin>
 
-				<!-- mvn versions:set -DnewVersion=x.y.z-SNAPSHOT -> Change version mvn 
+				<!-- mvn versions:set -DnewVersion=x.y.z-SNAPSHOT -> Change version mvn
 					versions:revert -> Revert change mvn versions:commit -> change version -->
 				<plugin>
 					<groupId>org.codehaus.mojo</groupId>
@@ -58,7 +59,13 @@
 
 			<dependency>
 				<groupId>net.jbaez.tepuy</groupId>
-				<artifactId>common</artifactId>
+				<artifactId>tepuy-common</artifactId>
+				<version>${tepuy.version}</version>
+			</dependency>
+
+			<dependency>
+				<groupId>net.jbaez.tepuy</groupId>
+				<artifactId>tepuy-module</artifactId>
 				<version>${tepuy.version}</version>
 			</dependency>
 
