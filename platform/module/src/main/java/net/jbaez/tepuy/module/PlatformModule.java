@@ -18,7 +18,6 @@
 package net.jbaez.tepuy.module;
 
 import java.util.List;
-import java.util.Set;
 
 import net.jbaez.tepuy.version.Version;
 
@@ -54,5 +53,5 @@ public interface PlatformModule
    * <p> Retorna las clases configuracion de contextos 
    * @return Lista con las clases de configuracion
    */
-  Set<Class<?>> getConfigClass();
+  Class<?> getConfigClass();
 }

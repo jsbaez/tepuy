@@ -16,26 +16,20 @@
  * Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA
  ******************************************************************************/
 
-package net.jbaez.tepuy.module.context;
+package net.jbaez.tepuy.module.util;
 
-import org.springframework.context.annotation.AnnotationConfigApplicationContext;
-import org.springframework.context.support.AbstractApplicationContext;
+import net.jbaez.tepuy.module.JsonModuleDescriptor;
 
-import net.jbaez.tepuy.module.engine.MainContextSupplier;
+public class JsonTestModule extends JsonModuleDescriptor {
 
-/**
- * <p> Implementacion que retorna {@link AnnotationConfigApplicationContext}
- * @author Jesus Baez
- */
-public class SimpleMainContextSupplier implements MainContextSupplier {
-
-  /**
-   * {@inheritDoc}
-   */
-  @Override
-  public AbstractApplicationContext get() 
-  {
-    return new AnnotationConfigApplicationContext(SpringEmptyConfig.class);
+  public JsonTestModule(String moduleId) {
+    super(moduleId);
   }
-  
+
+  @Override
+  public Class<?> getConfigClass() 
+  {
+    return null;
+  }
+
 }

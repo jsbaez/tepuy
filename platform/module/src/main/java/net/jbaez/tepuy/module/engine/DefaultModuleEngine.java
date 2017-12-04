@@ -52,8 +52,10 @@ public class DefaultModuleEngine implements ModuleEngine {
   private boolean initiated;
   private AbstractApplicationContext mainContext;
   
-  public DefaultModuleEngine(Version platformVersion, MainContextSupplier mainContextSupplier, 
-      RepositoryModules repositoryModule, ContextLayout contextLayout) {
+  public DefaultModuleEngine(Version platformVersion, 
+      MainContextSupplier mainContextSupplier, 
+      RepositoryModules repositoryModule, 
+      ContextLayout contextLayout) {
     this.mainContextSupplier = mainContextSupplier;
     this.repositoryModules = repositoryModule;
     this.platformVersion = platformVersion;
@@ -141,10 +143,7 @@ public class DefaultModuleEngine implements ModuleEngine {
   protected void validateGraph(Set<PlatformModule> modules)
   {
     Graph<PlatformModule, DefaultEdge> graph = new DefaultDirectedGraph<>(DefaultEdge.class);
-    
-    //Add all modules
-    modules.forEach(module -> graph.addVertex(module));
-    
+
     //Add dependencies
     Iterator<PlatformModule> iterator = modules.iterator();
     while(iterator.hasNext())
@@ -186,11 +185,25 @@ public class DefaultModuleEngine implements ModuleEngine {
         throw new IllegalStateException(message);
       }
       
-      graph.addVertex(optionalModule.get());
-      graph.addEdge(module, optionalModule.get());
-      addDependencies(graph, optionalModule.get());
+      boolean containNode = graph.containsVertex(module);
+      if(!containNode)
+      {
+        graph.addVertex(module);
+      }
+      
+      containNode = graph.containsVertex(optionalModule.get());
+      if(!containNode)
+      {
+        graph.addVertex(optionalModule.get());
+      }
+      
+      boolean existVertex = graph.containsEdge(module, optionalModule.get());
+      if(!existVertex)
+      {
+        graph.addEdge(module, optionalModule.get());
+        addDependencies(graph, optionalModule.get());
+      }
     }
-    
   }
   
 }

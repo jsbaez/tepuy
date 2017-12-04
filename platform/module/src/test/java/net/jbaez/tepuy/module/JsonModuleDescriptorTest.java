@@ -23,6 +23,7 @@ import java.util.List;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
+import net.jbaez.tepuy.module.util.JsonTestModule;
 import net.jbaez.tepuy.version.Versions;
 
 public class JsonModuleDescriptorTest {
@@ -30,7 +31,7 @@ public class JsonModuleDescriptorTest {
   @Test
   public void test_module_parse()
   {
-    PlatformModule module = new TestModule("module-1");
+    PlatformModule module = new JsonTestModule("module-1");
     RequiredVersion plataform = module.getPlatform();
     
     Assertions.assertFalse(plataform.isValid(Versions.parseVersion("0.0.1")));
@@ -63,7 +64,7 @@ public class JsonModuleDescriptorTest {
   @Test
   public void test_module_sin_plataforma()
   {
-    PlatformModule module = new TestModule("module-sin-plataforma");
+    PlatformModule module = new JsonTestModule("module-sin-plataforma");
     
     Assertions.assertThrows(IllegalArgumentException.class, ()->{
       module.getPlatform();
@@ -74,14 +75,14 @@ public class JsonModuleDescriptorTest {
   public void test_module_sin_json()
   {
     Assertions.assertThrows(IllegalArgumentException.class, ()->{
-      new TestModule("module-mal-json");
+      new JsonTestModule("module-mal-json");
     });
   }
   
   @Test
   public void test_module_mal_versiones()
   {
-    PlatformModule module = new TestModule("module-mal-versiones");
+    PlatformModule module = new JsonTestModule("module-mal-versiones");
     
     Assertions.assertThrows(IllegalArgumentException.class, ()->{
       module.getPlatform();

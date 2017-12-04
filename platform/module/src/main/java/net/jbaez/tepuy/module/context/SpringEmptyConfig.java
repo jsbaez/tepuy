@@ -16,20 +16,16 @@
  * Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA
  ******************************************************************************/
 
-package net.jbaez.tepuy.module;
+package net.jbaez.tepuy.module.context;
 
-import java.util.Set;
+import org.springframework.context.annotation.Configuration;
 
-public class TestModule extends JsonModuleDescriptor {
-
-  public TestModule(String moduleId) {
-    super(moduleId);
-  }
-
-  @Override
-  public Set<Class<?>> getConfigClass() 
-  {
-    return null;
-  }
+/**
+ * <p> Clase de utilidad para crear 
+ * una configuracion de spring vacia
+ * @author Jesus Baez
+ */
+@Configuration
+public class SpringEmptyConfig {
 
 }

@@ -18,8 +18,6 @@
 
 package net.jbaez.tepuy.module.context;
 
-import java.util.Set;
-
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 
@@ -43,10 +41,10 @@ public class HierarchicalContextLayout implements ContextLayout {
   
   protected AnnotationConfigApplicationContext createApplicationContext(PlatformModule module)
   {
-    Set<Class<?>> configClass = module.getConfigClass();
+    Class<?> configClass = module.getConfigClass();
     AnnotationConfigApplicationContext moduleContext = new AnnotationConfigApplicationContext();
     moduleContext.setParent(mainContext);
-    moduleContext.register(configClass.toArray(new Class[] {}));
+    moduleContext.register(configClass);
     return moduleContext;
   }
 
