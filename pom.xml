@@ -17,7 +17,7 @@
 		<java.target.version>1.9</java.target.version>
 
 		<tepuy.version>${project.version}</tepuy.version>
-		<junit.version>5.0.1</junit.version>
+		<junit.version>5.0.2</junit.version>
 		<json-simple.version>1.1.1</json-simple.version>
 		<jgrapht.version>1.1.0</jgrapht.version>
 		<spring-context.version>5.0.1.RELEASE</spring-context.version>
@@ -25,10 +25,11 @@
 
 	<modules>
 		<module>platform</module>
+		<module>package</module>
 	</modules>
 
 	<build>
-		<finalName>tepuy-${project.artifactId}-${project.version}</finalName>
+		<!-- finalName>tepuy-${project.artifactId}-${project.version}</finalName -->
 		<pluginManagement>
 			<plugins>
 
@@ -39,6 +40,23 @@
 						<source>${java.source.version}</source>
 						<target>${java.target.version}</target>
 					</configuration>
+				</plugin>
+
+				<plugin>
+					<artifactId>maven-surefire-plugin</artifactId>
+					<version>2.19</version>
+					<dependencies>
+						<dependency>
+							<groupId>org.junit.platform</groupId>
+							<artifactId>junit-platform-surefire-provider</artifactId>
+							<version>1.0.2</version>
+						</dependency>
+						<dependency>
+							<groupId>org.junit.jupiter</groupId>
+							<artifactId>junit-jupiter-engine</artifactId>
+							<version>${junit.version}</version>
+						</dependency>
+					</dependencies>
 				</plugin>
 
 				<!-- mvn versions:set -DnewVersion=x.y.z-SNAPSHOT -> Change version mvn 
@@ -58,7 +76,19 @@
 
 			<dependency>
 				<groupId>net.jbaez.tepuy</groupId>
-				<artifactId>common</artifactId>
+				<artifactId>tepuy-common</artifactId>
+				<version>${tepuy.version}</version>
+			</dependency>
+
+			<dependency>
+				<groupId>net.jbaez.tepuy</groupId>
+				<artifactId>tepuy-module</artifactId>
+				<version>${tepuy.version}</version>
+			</dependency>
+
+			<dependency>
+				<groupId>net.jbaez.tepuy</groupId>
+				<artifactId>tepuy-server</artifactId>
 				<version>${tepuy.version}</version>
 			</dependency>
 

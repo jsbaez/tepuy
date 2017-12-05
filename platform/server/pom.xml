@@ -10,8 +10,8 @@
 		<version>0.0.1-SNAPSHOT</version>
 	</parent>
 
-	<artifactId>tepuy-module</artifactId>
-	<name>Tepuy core module</name>
+	<artifactId>tepuy-server</artifactId>
+	<name>Tepuy server</name>
 
 	<dependencies>
 
@@ -19,26 +19,26 @@
 			<groupId>net.jbaez.tepuy</groupId>
 			<artifactId>tepuy-common</artifactId>
 		</dependency>
-		<dependency>
-			<groupId>org.springframework</groupId>
-			<artifactId>spring-context</artifactId>
-		</dependency>
-		<dependency>
-			<groupId>org.jgrapht</groupId>
-			<artifactId>jgrapht-core</artifactId>
-		</dependency>
-
-		<dependency>
-			<groupId>com.googlecode.json-simple</groupId>
-			<artifactId>json-simple</artifactId>
-			<exclusions>
-				<exclusion>
-					<groupId>junit</groupId>
-					<artifactId>junit</artifactId>
-				</exclusion>
-			</exclusions>
-		</dependency>
 
 	</dependencies>
+
+	<build>
+
+		<resources>
+		
+			<resource>
+				<directory>src/main/resources</directory>
+				<filtering>true</filtering>
+				<includes>
+					<include>**/*</include>
+				</includes>
+			</resource>
+			
+		</resources>
+		
+		<plugins>
+
+		</plugins>
+	</build>
 
 </project>
