@@ -24,6 +24,11 @@
             <groupId>net.jbaez.tepuy</groupId>
             <artifactId>tepuy-module</artifactId>
         </dependency>
+        
+        <dependency>
+            <groupId>net.jbaez.tepuy</groupId>
+            <artifactId>tepuy-server</artifactId>
+        </dependency>
 
     </dependencies>
 

@@ -18,6 +18,7 @@
 
 package net.jbaez.tepuy.module.classloader;
 
+import java.util.Collections;
 import java.util.Optional;
 import java.util.ServiceLoader;
 import java.util.ServiceLoader.Provider;
@@ -49,7 +50,7 @@ public class ServiceLoaderRepositoryModule implements RepositoryModules {
       modules = readModules();
     }
     
-    return modules;
+    return Collections.unmodifiableSet(modules);
   }
 
   /**
